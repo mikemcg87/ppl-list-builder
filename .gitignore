@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.pyc
+
+# Environment
+.env
+
+# Output files (contains scraped data)
+output/
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Test files
+.pytest_cache/
+*.log
+
+# Claude
+.claude/

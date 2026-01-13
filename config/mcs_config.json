@@ -1,0 +1,18 @@
+{
+  "name": "mcs",
+  "url": "https://www.mcscertified.com/find-an-installer",
+  "filters": {
+    "heat_pump_types": [
+      "Air Source Heat Pump",
+      "Exhaust Air Heat Pump",
+      "Ground/Water Source Heat Pump"
+    ],
+    "location": null
+  },
+  "output_format": "csv",
+  "enable_llm_enrichment": false,
+  "request_delay": 1.5,
+  "retry_attempts": 3,
+  "timeout": 30,
+  "headless": true
+}
