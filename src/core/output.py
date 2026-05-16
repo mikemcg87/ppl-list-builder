@@ -55,7 +55,10 @@ class OutputHandler:
             "phone",
             "location",
             "bus_registered",
+            "mcs_registered",
             "certifications",
+            "niche",
+            "source_technology",
             "scraped_at",
             "source"
         ]

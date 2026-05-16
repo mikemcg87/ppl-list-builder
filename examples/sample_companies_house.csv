@@ -1,0 +1,5 @@
+company_name,ch_match_status,ch_company_status,ch_primary_director,ch_director_count,bus_registered,mcs_registered,website,phone,location
+Green Future Installers Ltd,matched,active,"SMITH, Alex",2,true,true,greenfuture.example,01234567890,"Bristol, UK"
+Northern Solar Works Ltd,matched,active,"PATEL, Maya",1,true,true,northernsolar.example,01234567891,"Leeds, UK"
+Metro Retrofit Ltd,matched,active,"O'NEILL, Jordan",1,false,true,metroretrofit.example,01234567892,"Manchester, UK"
+Dormant Eco Systems Ltd,matched,dissolved,"BROWN, Sam",1,true,true,dormanteco.example,01234567893,"Cardiff, UK"

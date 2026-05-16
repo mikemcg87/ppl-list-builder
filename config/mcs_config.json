@@ -1,5 +1,7 @@
 {
   "name": "mcs",
+  "niche": "heat_pumps",
+  "display_name": "Heat Pumps",
   "url": "https://www.mcscertified.com/find-an-installer",
   "filters": {
     "heat_pump_types": [
@@ -7,7 +9,40 @@
       "Exhaust Air Heat Pump",
       "Ground/Water Source Heat Pump"
     ],
+    "technologies": [
+      "All Heat Pumps"
+    ],
+    "mcs_image_src_contains": "All-Heat-Pumps",
+    "mcs_tile_text": "All Heat Pumps",
     "location": null
+  },
+  "search_terms": [
+    "heat pump",
+    "installer",
+    "UK"
+  ],
+  "tiering": {
+    "primary_quality_signal": "bus_registered",
+    "required_status_column": "ch_company_status",
+    "required_status_value": "active",
+    "required_director_column": "ch_primary_director",
+    "score_weights": {
+      "primary_quality_signal": 30,
+      "facebook_ads_running": 40,
+      "google_ads_running": 30,
+      "multiple_directors": 15,
+      "named_director": 5
+    }
+  },
+  "pipeline": {
+    "auto_build_tiers": false,
+    "run_paid_enrichers": false,
+    "source_output": "output/heat-pump-installers.csv",
+    "companies_house_output": "output/heat-pump-installers-with-directors.csv",
+    "facebook_output": "output/enriched_fb.csv",
+    "tiered_output": "output/prospects_tiered.csv",
+    "domain_output": "output/prospects_tiered.csv",
+    "google_output": "output/final_leads_with_google.csv"
   },
   "output_format": "csv",
   "enable_llm_enrichment": false,

@@ -1,0 +1,31 @@
+{
+  "name": "stub",
+  "niche": "mortgage_brokers",
+  "display_name": "Mortgage Brokers",
+  "url": "TODO: FCA Financial Services Register or Companies House SIC ingestion",
+  "filters": {
+    "technologies": [],
+    "location": null
+  },
+  "search_terms": [
+    "mortgage broker",
+    "UK"
+  ],
+  "tiering": {
+    "primary_quality_signal": "fca_authorised"
+  },
+  "pipeline": {
+    "source_output": "output/mortgage-brokers.csv",
+    "companies_house_output": "output/mortgage-brokers-with-directors.csv",
+    "facebook_output": "output/mortgage-brokers-enriched-fb.csv",
+    "tiered_output": "output/mortgage-brokers-prospects-tiered.csv",
+    "domain_output": "output/mortgage-brokers-prospects-tiered.csv",
+    "google_output": "output/mortgage-brokers-final-leads-with-google.csv"
+  },
+  "output_format": "csv",
+  "enable_llm_enrichment": false,
+  "request_delay": 1.5,
+  "retry_attempts": 3,
+  "timeout": 30,
+  "headless": true
+}

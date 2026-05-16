@@ -1,0 +1,31 @@
+{
+  "name": "stub",
+  "niche": "windows_doors",
+  "display_name": "Windows and Doors",
+  "url": "TODO: FENSA Approved Installers directory or Companies House SIC ingestion",
+  "filters": {
+    "technologies": [],
+    "location": null
+  },
+  "search_terms": [
+    "windows doors conservatory installer",
+    "UK"
+  ],
+  "tiering": {
+    "primary_quality_signal": "fensa_registered"
+  },
+  "pipeline": {
+    "source_output": "output/windows-doors-installers.csv",
+    "companies_house_output": "output/windows-doors-installers-with-directors.csv",
+    "facebook_output": "output/windows-doors-enriched-fb.csv",
+    "tiered_output": "output/windows-doors-prospects-tiered.csv",
+    "domain_output": "output/windows-doors-prospects-tiered.csv",
+    "google_output": "output/windows-doors-final-leads-with-google.csv"
+  },
+  "output_format": "csv",
+  "enable_llm_enrichment": false,
+  "request_delay": 1.5,
+  "retry_attempts": 3,
+  "timeout": 30,
+  "headless": true
+}

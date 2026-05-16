@@ -10,10 +10,26 @@ venv/
 
 # Environment
 .env
+.env.*
+!.env.example
 
 # Output files (contains scraped data)
 output/
 logs/
+exports/
+data/private/
+*.sqlite
+*.db
+.hunter_cache.json
+
+# Private operating notes and campaign assets
+docs/cold_emails.md
+docs/conversation_ai_prompts.md
+docs/installers_page_draft.md
+docs/delivery/
+docs/codex-tasks/
+scripts/draft_outreach.py
+scripts/whats_next.py
 
 # IDE
 .idea/

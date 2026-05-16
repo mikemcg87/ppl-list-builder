@@ -1,0 +1,49 @@
+{
+  "name": "mcs",
+  "niche": "solar_pv",
+  "display_name": "Solar PV",
+  "url": "https://www.mcscertified.com/find-an-installer",
+  "filters": {
+    "heat_pump_types": [],
+    "technologies": [
+      "Solar Photovoltaic"
+    ],
+    "mcs_image_src_contains": "Solar-PV",
+    "mcs_tile_text": "Solar PV",
+    "location": null
+  },
+  "search_terms": [
+    "solar PV",
+    "solar panel installer",
+    "UK"
+  ],
+  "tiering": {
+    "primary_quality_signal": "mcs_registered",
+    "required_status_column": "ch_company_status",
+    "required_status_value": "active",
+    "required_director_column": "ch_primary_director",
+    "score_weights": {
+      "primary_quality_signal": 30,
+      "facebook_ads_running": 40,
+      "google_ads_running": 30,
+      "multiple_directors": 15,
+      "named_director": 5
+    }
+  },
+  "pipeline": {
+    "auto_build_tiers": true,
+    "run_paid_enrichers": false,
+    "source_output": "output/solar-pv-installers.csv",
+    "companies_house_output": "output/solar-pv-installers-with-directors.csv",
+    "facebook_output": "output/solar-pv-enriched-fb.csv",
+    "tiered_output": "output/solar-pv-prospects-tiered.csv",
+    "domain_output": "output/solar-pv-prospects-tiered.csv",
+    "google_output": "output/solar-pv-final-leads-with-google.csv"
+  },
+  "output_format": "csv",
+  "enable_llm_enrichment": false,
+  "request_delay": 1.5,
+  "retry_attempts": 3,
+  "timeout": 30,
+  "headless": true
+}

@@ -1,4 +1,4 @@
-"""MCS Directory heat pump installer scraper."""
+"""MCS Directory installer scraper."""
 
 import time
 import logging
@@ -28,7 +28,7 @@ logger = logging.getLogger("ppl-list-builder")
 
 
 class MCScraper(DataSource):
-    """Web scraper for MCS Directory heat pump installers."""
+    """Web scraper for MCS Directory installer categories."""
 
     def __init__(self, config: ScraperConfig):
         """Initialize MCS scraper.
@@ -41,8 +41,16 @@ class MCScraper(DataSource):
         self.installers: List[Installer] = []
         self.processed_companies: Set[str] = set()
         self.failed_records: List[dict] = []
-        self.output_path = "output/heat-pump-installers.csv"
+        self.output_path = config.pipeline.source_output
         self.csv_initialized = False
+        self.source_technology = self._source_technology()
+
+    def _source_technology(self) -> str:
+        """Return the configured technology label for output metadata."""
+        technologies = self.config.filters.technologies or self.config.filters.heat_pump_types
+        if technologies:
+            return technologies[0]
+        return self.config.display_name
 
     def _init_driver(self) -> webdriver.Chrome:
         """Initialize Selenium WebDriver.
@@ -88,7 +96,7 @@ class MCScraper(DataSource):
             self.driver.get(self.config.url)
             logger.info("Page loaded, applying pre-filters...")
 
-            # Apply pre-filter workflow (All Heat Pumps + Nationwide)
+            # Apply pre-filter workflow (technology + Nationwide)
             self._apply_pre_filters()
 
             # Wait for filtered results page to load
@@ -115,43 +123,60 @@ class MCScraper(DataSource):
                 self.driver.quit()
                 logger.info("WebDriver closed")
 
+    def _click_technology_tile(self) -> bool:
+        """Click the configured MCS technology tile."""
+        image_match = (
+            self.config.filters.mcs_image_src_contains
+            or "All-Heat-Pumps"
+        )
+        tile_text = (
+            self.config.filters.mcs_tile_text
+            or self.source_technology
+            or "All Heat Pumps"
+        )
+
+        # First scroll down to see the technology options.
+        self.driver.execute_script("window.scrollBy(0, 500);")
+        time.sleep(1)
+
+        selectors = [
+            (
+                By.XPATH,
+                f"//img[contains(@src, '{image_match}')]",
+            ),
+            (
+                By.XPATH,
+                f"//*[contains(normalize-space(.), '{tile_text}')]/ancestor::button | "
+                f"//*[contains(normalize-space(.), '{tile_text}')]/ancestor::a | "
+                f"//*[contains(normalize-space(.), '{tile_text}')]/ancestor::div[@role='button']",
+            ),
+        ]
+
+        for by, selector in selectors:
+            try:
+                elem = self.driver.find_element(by, selector)
+                self.driver.execute_script("arguments[0].scrollIntoView();", elem)
+                time.sleep(0.5)
+                self.driver.execute_script("arguments[0].click();", elem)
+                logger.info(f"Clicked MCS technology tile: {tile_text}")
+                return True
+            except NoSuchElementException:
+                continue
+            except Exception as e:
+                logger.debug(f"Technology tile selector failed ({selector}): {e}")
+
+        return False
+
     def _apply_pre_filters(self) -> None:
-        """Apply pre-filter workflow: All Heat Pumps + Nationwide region."""
+        """Apply pre-filter workflow: configured technology + Nationwide region."""
         try:
             logger.info("Starting pre-filter workflow...")
 
-            # Step 1: Click on "All Heat Pumps" image or parent
-            logger.info("Step 1: Clicking 'All Heat Pumps' image...")
-            try:
-                # First scroll down to see the heat pump options
-                self.driver.execute_script("window.scrollBy(0, 500);")
-                time.sleep(1)
-
-                # Try clicking the image
-                try:
-                    heat_pump_img = self.driver.find_element(
-                        By.XPATH,
-                        "//img[contains(@src, 'All-Heat-Pumps')]"
-                    )
-                    self.driver.execute_script("arguments[0].scrollIntoView();", heat_pump_img)
-                    time.sleep(0.5)
-                    # Use JavaScript click instead of Selenium click
-                    self.driver.execute_script("arguments[0].click();", heat_pump_img)
-                    logger.info("Clicked All Heat Pumps image using JavaScript")
-                except Exception as e:
-                    # If image click fails, try clicking the parent button/link
-                    logger.debug(f"Direct image click failed: {e}, trying parent element...")
-                    heat_pump_link = self.driver.find_element(
-                        By.XPATH,
-                        "//img[contains(@src, 'All-Heat-Pumps')]/ancestor::button | //img[contains(@src, 'All-Heat-Pumps')]/ancestor::a | //img[contains(@src, 'All-Heat-Pumps')]/ancestor::div[@role='button']"
-                    )
-                    self.driver.execute_script("arguments[0].click();", heat_pump_link)
-                    logger.info("Clicked parent element of All Heat Pumps image")
-
-                time.sleep(1)
-            except NoSuchElementException:
-                logger.warning("All Heat Pumps image not found")
+            logger.info(f"Step 1: Clicking '{self.source_technology}' tile...")
+            if not self._click_technology_tile():
+                logger.warning(f"MCS technology tile not found: {self.source_technology}")
                 return
+            time.sleep(1)
 
             # Step 2: Click "select-location" button
             logger.info("Step 2: Clicking 'select-location' button...")
@@ -333,7 +358,10 @@ class MCScraper(DataSource):
                 email=email,
                 location=location,
                 bus_registered=bus_registered,
+                mcs_registered=True,
                 certifications=certifications,
+                niche=self.config.niche,
+                source_technology=self.source_technology,
                 scraped_at=datetime.now(),
                 source="mcs"
             )
@@ -596,7 +624,10 @@ class MCScraper(DataSource):
                     'email': installer.email,
                     'location': installer.location,
                     'bus_registered': installer.bus_registered,
+                    'mcs_registered': installer.mcs_registered,
                     'certifications': str(installer.certifications),
+                    'niche': installer.niche,
+                    'source_technology': installer.source_technology,
                     'scraped_at': installer.scraped_at.isoformat(),
                     'source': installer.source
                 })

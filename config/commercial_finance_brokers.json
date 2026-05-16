@@ -1,0 +1,32 @@
+{
+  "name": "stub",
+  "niche": "commercial_finance_brokers",
+  "display_name": "Commercial Finance Brokers",
+  "url": "TODO: NACFB member directory plus Companies House SIC ingestion",
+  "filters": {
+    "technologies": [],
+    "location": null
+  },
+  "search_terms": [
+    "commercial finance broker",
+    "business finance broker",
+    "UK"
+  ],
+  "tiering": {
+    "primary_quality_signal": "nacfb_member"
+  },
+  "pipeline": {
+    "source_output": "output/commercial-finance-brokers.csv",
+    "companies_house_output": "output/commercial-finance-brokers-with-directors.csv",
+    "facebook_output": "output/commercial-finance-brokers-enriched-fb.csv",
+    "tiered_output": "output/commercial-finance-brokers-prospects-tiered.csv",
+    "domain_output": "output/commercial-finance-brokers-prospects-tiered.csv",
+    "google_output": "output/commercial-finance-brokers-final-leads-with-google.csv"
+  },
+  "output_format": "csv",
+  "enable_llm_enrichment": false,
+  "request_delay": 1.5,
+  "retry_attempts": 3,
+  "timeout": 30,
+  "headless": true
+}
