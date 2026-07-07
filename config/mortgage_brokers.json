@@ -1,20 +1,41 @@
 {
-  "name": "stub",
+  "name": "fca",
   "niche": "mortgage_brokers",
   "display_name": "Mortgage Brokers",
-  "url": "TODO: FCA Financial Services Register or Companies House SIC ingestion",
+  "url": "https://register.fca.org.uk/services/V0.1",
   "filters": {
     "technologies": [],
-    "location": null
+    "location": null,
+    "fca_search_terms": [
+      "mortgage",
+      "mortgage broker"
+    ],
+    "fca_required_permissions": [
+      "Advising on regulated mortgage contracts",
+      "Arranging (bringing about) regulated mortgage contracts"
+    ],
+    "fca_max_firms_per_term": 250
   },
   "search_terms": [
     "mortgage broker",
     "UK"
   ],
   "tiering": {
-    "primary_quality_signal": "fca_authorised"
+    "primary_quality_signal": "fca_authorised",
+    "required_status_column": "ch_company_status",
+    "required_status_value": "active",
+    "required_director_column": "ch_primary_director",
+    "score_weights": {
+      "primary_quality_signal": 30,
+      "facebook_ads_running": 40,
+      "google_ads_running": 30,
+      "multiple_directors": 15,
+      "named_director": 5
+    }
   },
   "pipeline": {
+    "auto_build_tiers": true,
+    "run_paid_enrichers": false,
     "source_output": "output/mortgage-brokers.csv",
     "companies_house_output": "output/mortgage-brokers-with-directors.csv",
     "facebook_output": "output/mortgage-brokers-enriched-fb.csv",
@@ -24,7 +45,7 @@
   },
   "output_format": "csv",
   "enable_llm_enrichment": false,
-  "request_delay": 1.5,
+  "request_delay": 1.1,
   "retry_attempts": 3,
   "timeout": 30,
   "headless": true

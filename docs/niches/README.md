@@ -15,7 +15,7 @@ The universal pipeline is:
 | Niche | Verdict | Source-of-truth approach | Why it fits Second Wind |
 | --- | --- | --- | --- |
 | Solar PV | Implemented second reference vertical | MCS installer directory filtered to Solar PV | £5k-£15k installs, heavy lead-gen activity, easy dead-quote reactivation angle |
-| Mortgage brokers | Stubbed | FCA Financial Services Register, then Companies House | High commissions, sales teams, large stale enquiry databases, but source ingestion needs FCA-specific handling |
+| Mortgage brokers | Implemented (FCA register API source builder) | FCA Financial Services Register API (free key), then Companies House | High commissions, sales teams, large stale enquiry databases; seeded by firm-name search and filtered to Authorised firms holding regulated-mortgage permissions |
 | Windows, doors, conservatories | Stubbed | FENSA approved installer directory, possibly TrustMark/FENSA cross-check | High competition and big historic lead databases, but lower average ticket and noisier operators |
 | Commercial finance brokers | Stubbed | NACFB member directory plus Companies House | B2B, high lifetime value, CRM-heavy sales process, but less obvious consumer-style ad-spend signal |
 

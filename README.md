@@ -42,7 +42,7 @@ flowchart LR
 | --- | --- | --- | --- |
 | `config/mcs_config.json` | Reference | MCS installer directory | BUS registration |
 | `config/solar_pv.json` | Runnable | MCS installer directory | MCS registration |
-| `config/mortgage_brokers.json` | Stub | FCA register / Companies House | TBD |
+| `config/mortgage_brokers.json` | Runnable | FCA Financial Services Register API | FCA authorisation with mortgage permissions |
 | `config/commercial_finance_brokers.json` | Stub | NACFB/FCA / Companies House | TBD |
 | `config/windows_doors.json` | Stub | FENSA / TrustMark | TBD |
 
@@ -60,6 +60,12 @@ Run the Solar PV source scrape:
 
 ```bash
 python3 -m src.main --config config/solar_pv.json
+```
+
+Run the mortgage-broker source build (needs free `FCA_API_EMAIL`/`FCA_API_KEY` in `.env`, signup at https://register.fca.org.uk/Developer/s/):
+
+```bash
+python3 -m src.main --config config/mortgage_brokers.json
 ```
 
 Build prospect tiers from existing source and enrichment outputs:
@@ -101,6 +107,7 @@ The pipeline is deliberately conservative about paid providers:
 | --- | --- |
 | `src/main.py` | Source scrape CLI entrypoint |
 | `src/scrapers/mcs_scraper.py` | Selenium scraper for the MCS installer directory |
+| `src/scrapers/fca_scraper.py` | FCA Financial Services Register API source builder |
 | `src/core/models.py` | Pydantic models and niche pipeline config |
 | `scripts/enrich_companies.py` | Companies House, ad, Google Ads, and Hunter enrichment |
 | `scripts/build_prospect_tiers.py` | Tiering and lead scoring |
@@ -139,6 +146,7 @@ python3 -m py_compile \
   src/main.py \
   src/core/models.py \
   src/scrapers/mcs_scraper.py \
+  src/scrapers/fca_scraper.py \
   scripts/build_prospect_tiers.py \
   scripts/find_domains.py \
   scripts/enrich_companies.py

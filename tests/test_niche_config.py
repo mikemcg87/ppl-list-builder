@@ -30,6 +30,35 @@ class TestNicheConfig(unittest.TestCase):
         self.assertEqual(assign_tier(row, config.tiering), "PLATINUM")
         self.assertGreaterEqual(lead_score(row, config.tiering), 90)
 
+    def test_mortgage_broker_config_uses_fca_signal(self):
+        config = load_config("config/mortgage_brokers.json")
+
+        self.assertEqual(config.name, "fca")
+        self.assertEqual(config.tiering.primary_quality_signal, "fca_authorised")
+        self.assertIn(
+            "Advising on regulated mortgage contracts",
+            config.filters.fca_required_permissions,
+        )
+
+        row = pd.Series(
+            {
+                "ch_match_status": "matched",
+                "ch_company_status": "active",
+                "ch_primary_director": "SMITH, Jane",
+                "fca_authorised": True,
+                "bus_registered": False,
+                "mcs_registered": False,
+                "facebook_ads_running": True,
+                "facebook_ads_count": 6,
+                "google_ads_running": False,
+                "domain_confident": False,
+                "ch_director_count": 2,
+            }
+        )
+
+        self.assertEqual(assign_tier(row, config.tiering), "PLATINUM")
+        self.assertGreaterEqual(lead_score(row, config.tiering), 90)
+
     def test_heat_pump_config_still_uses_bus_signal(self):
         config = load_config("config/mcs_config.json")
 

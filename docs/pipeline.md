@@ -8,7 +8,7 @@ This is the current operating map for the prospect-list pipeline. Older docs des
 | --- | --- | --- |
 | `config/mcs_config.json` | Reference | Heat pumps, MCS source, BUS quality signal |
 | `config/solar_pv.json` | Runnable | Solar PV, MCS source, MCS registration quality signal |
-| `config/mortgage_brokers.json` | Stub | Needs FCA/Companies House source builder |
+| `config/mortgage_brokers.json` | Runnable | Mortgage brokers, FCA register API source, FCA authorisation quality signal. Needs free `FCA_API_EMAIL`/`FCA_API_KEY` in `.env` (signup: https://register.fca.org.uk/Developer/s/). Name-search seeded, then permission-filtered; excludes Appointed Representatives |
 | `config/commercial_finance_brokers.json` | Stub | Needs NACFB/FCA/Companies House source builder |
 | `config/windows_doors.json` | Stub | Needs FENSA source builder |
 
@@ -85,7 +85,7 @@ Run:
 
 ```bash
 python3 -m unittest discover
-python3 -m py_compile src/main.py src/core/models.py src/scrapers/mcs_scraper.py scripts/build_prospect_tiers.py scripts/find_domains.py scripts/enrich_companies.py
+python3 -m py_compile src/main.py src/core/models.py src/scrapers/mcs_scraper.py src/scrapers/fca_scraper.py scripts/build_prospect_tiers.py scripts/find_domains.py scripts/enrich_companies.py
 python3 -m src.main --help
 python3 scripts/enrich_companies.py --help
 python3 scripts/build_prospect_tiers.py --help

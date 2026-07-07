@@ -149,6 +149,10 @@ Examples:
             from src.scrapers.mcs_scraper import MCScraper
 
             scraper = MCScraper(config)
+        elif config.name == "fca":
+            from src.scrapers.fca_scraper import FCAScraper
+
+            scraper = FCAScraper(config)
         else:
             logger.error(f"Unknown scraper: {config.name}")
             return 1

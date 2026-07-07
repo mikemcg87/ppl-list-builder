@@ -15,6 +15,11 @@ class Installer(BaseModel):
     location: Optional[str] = Field(None, description="Company location/address")
     bus_registered: bool = Field(..., description="Whether company is registered with Boiler Upgrade Scheme")
     mcs_registered: bool = Field(default=True, description="Whether record came from MCS certified directory")
+    fca_authorised: bool = Field(default=False, description="Whether firm is Authorised on the FCA Financial Services Register")
+    fca_frn: Optional[str] = Field(None, description="FCA Firm Reference Number")
+    fca_companies_house_number: Optional[str] = Field(
+        None, description="Companies House number as recorded on the FCA register"
+    )
     certifications: List[str] = Field(..., description="List of source certifications")
     niche: str = Field(default="heat_pumps", description="Prospect niche identifier")
     source_technology: Optional[str] = Field(None, description="Source directory technology/category")
@@ -36,6 +41,18 @@ class FilterConfig(BaseModel):
     mcs_tile_text: Optional[str] = Field(
         None,
         description="Technology tile text fallback for MCS source pages",
+    )
+    fca_search_terms: List[str] = Field(
+        default_factory=list,
+        description="Firm-name search terms for the FCA register (falls back to search_terms)",
+    )
+    fca_required_permissions: List[str] = Field(
+        default_factory=list,
+        description="Keep a firm only if it holds any of these FCA permissions (empty keeps all authorised firms)",
+    )
+    fca_max_firms_per_term: Optional[int] = Field(
+        None,
+        description="Cap on per-firm detail lookups for each FCA search term (None means no cap)",
     )
     location: Optional[str] = Field(None, description="Location/postcode filter (future use)")
 
